@@ -1,6 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none" aria-hidden="true">
-  <rect width="160" height="160" rx="20" fill="#0f172a"/>
-  <rect x="3" y="3" width="154" height="154" rx="17" stroke="#3b82f6" stroke-opacity="0.5" stroke-width="2"/>
-  <text x="80" y="95" text-anchor="middle" fill="#e2e8f0" font-family="system-ui,Segoe UI,sans-serif" font-size="42" font-weight="700">UEL</text>
-  <text x="80" y="118" text-anchor="middle" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="11" font-weight="600" letter-spacing="0.15em">LONDON</text>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 320 120" role="img" aria-label="University of East London">
+  <image width="320" height="120" preserveAspectRatio="xMidYMid meet" xlink:href="uel.png" href="uel.png" />
 </svg>

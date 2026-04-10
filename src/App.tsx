@@ -13,6 +13,9 @@ import {
 } from 'lucide-react';
 import { AnimatedBackground } from './components/AnimatedBackground';
 import { HeroOrbit } from './components/HeroOrbit';
+import { HeroAnimatedTitle } from './components/HeroAnimatedTitle';
+import { MarqueeStrip } from './components/MarqueeStrip';
+import { ProfileOverview } from './components/ProfileOverview';
 import { Splash } from './components/Splash';
 import { ResumePrint } from './components/ResumePrint';
 import { ContactConnect } from './components/ContactConnect';
@@ -27,6 +30,16 @@ const SECTIONS = [
   { id: 'contact', label: 'Contact' },
 ];
 
+/** Hero tagline — word-stagger row (portfolio-style motion, e.g. chkstepan.com) */
+const HERO_TAGLINE_WORDS = [
+  'I',
+  'build',
+  'clear,',
+  'performant',
+  'full-stack',
+  'experiences',
+];
+
 /** Shared easing — calm, product-style deceleration */
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -38,21 +51,23 @@ const sectionHeadingContainer = {
 };
 
 const sectionHeadingItem = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 20, filter: 'blur(8px)' },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: EASE },
+    filter: 'blur(0px)',
+    transition: { duration: 0.55, ease: EASE },
   },
 };
 
 const skillCardVariants = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 24, filter: 'blur(8px)' },
   visible: {
     opacity: 1,
     y: 0,
+    filter: 'blur(0px)',
     transition: {
-      duration: 0.5,
+      duration: 0.55,
       ease: EASE,
       staggerChildren: 0.035,
       delayChildren: 0.1,
@@ -60,9 +75,9 @@ const skillCardVariants = {
   },
 };
 
-const skillChipVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: EASE } },
+const skillRowVariants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.42, ease: EASE } },
 };
 
 const springNav = { type: 'spring' as const, stiffness: 380, damping: 32 };
@@ -88,22 +103,22 @@ function SectionHeading({
     >
       <motion.p
         variants={sectionHeadingItem}
-        className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500"
+        className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500 transition-colors duration-200 hover:text-zinc-400"
       >
         {eyebrow}
       </motion.p>
       <motion.h2
         variants={sectionHeadingItem}
-        className="flex flex-wrap items-center gap-3 text-3xl font-semibold tracking-tight text-white md:text-4xl"
+        className="group flex flex-wrap items-center gap-3 text-3xl font-semibold tracking-tight text-white md:text-4xl"
       >
         <motion.span
-          className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-500/10 ring-1 ring-sky-500/20"
+          className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-500/10 ring-1 ring-sky-500/20 transition-[box-shadow,background-color] duration-300 group-hover:bg-sky-500/15 group-hover:ring-sky-400/35"
           whileHover={{ scale: 1.08, rotate: -4 }}
           transition={springNav}
         >
-          <Icon className="h-5 w-5 text-sky-400" />
+          <Icon className="h-5 w-5 text-sky-400 transition-transform duration-300 group-hover:scale-110" />
         </motion.span>
-        {title}
+        <span className="transition-colors duration-300 group-hover:text-sky-50">{title}</span>
       </motion.h2>
       <motion.div
         variants={sectionHeadingItem}
@@ -162,7 +177,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-zinc-950 text-zinc-100 selection:bg-sky-500/30">
+    <div className="relative min-h-screen overflow-x-hidden bg-zinc-950 text-zinc-100 selection:bg-sky-500/30">
       <div className="pointer-events-none fixed inset-0 -z-[5] mesh-bg opacity-90" />
       <AnimatePresence>
         {!isLoaded && <Splash onComplete={() => setIsLoaded(true)} />}
@@ -204,8 +219,10 @@ export default function App() {
                     type="button"
                     onClick={() => scrollTo(section.id)}
                     className={cn(
-                      'relative rounded-lg px-3.5 py-2 text-[13px] font-medium tracking-wide transition-colors',
-                      activeSection === section.id ? 'text-white' : 'text-zinc-400 hover:text-white',
+                      'relative rounded-lg px-3.5 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200',
+                      activeSection === section.id
+                        ? 'text-white'
+                        : 'text-zinc-400 hover:bg-white/[0.06] hover:text-white',
                     )}
                     whileHover={hoverLift}
                     whileTap={tapScale}
@@ -227,6 +244,7 @@ export default function App() {
                 className="flex h-10 w-10 items-center justify-center rounded-xl text-zinc-400 transition-colors hover:bg-white/[0.06] hover:text-white md:hidden"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+                whileHover={{ scale: 1.06, backgroundColor: 'rgba(255,255,255,0.06)' }}
                 whileTap={tapScale}
               >
                 <AnimatePresence mode="wait" initial={false}>
@@ -323,7 +341,7 @@ export default function App() {
           <main>
             <section
               id="hero"
-              className="relative flex min-h-screen flex-col justify-center overflow-hidden px-6 pb-20 pt-28"
+              className="relative flex min-h-screen flex-col justify-center overflow-visible px-6 pb-20 pt-28"
             >
               <div
                 className="pointer-events-none absolute inset-0 opacity-[0.4]"
@@ -344,10 +362,11 @@ export default function App() {
                   transition={{ duration: 0.75, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <motion.div
-                    className="mb-6 inline-flex items-center gap-2 self-center rounded-full border border-blue-500/30 bg-blue-600/[0.12] px-4 py-1.5 ring-1 ring-blue-500/15 lg:self-start"
+                    className="mb-6 inline-flex cursor-default items-center gap-2 self-center rounded-full border border-blue-500/30 bg-blue-600/[0.12] px-4 py-1.5 ring-1 ring-blue-500/15 transition-[border-color,box-shadow,background-color] duration-300 hover:border-blue-400/50 hover:bg-blue-600/[0.18] hover:ring-blue-400/25 lg:self-start"
                     initial={{ opacity: 0, scale: 0.96 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    whileHover={{ scale: 1.02 }}
                   >
                     <span className="relative flex h-2 w-2">
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-35" />
@@ -358,47 +377,25 @@ export default function App() {
                     </span>
                   </motion.div>
 
-                  <motion.h1
-                    className="mb-4 text-4xl font-semibold leading-[1.1] tracking-tight text-white md:text-5xl lg:text-6xl xl:text-7xl"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.65, delay: 0.18, ease: EASE }}
-                  >
-                    <span className="text-zinc-500">Hey, I&apos;m </span>
-                    <span className="text-blue-400">
-                      {resumeData.basics.name.split(/\s+/)[0] || resumeData.basics.name}
-                    </span>
-                    {resumeData.basics.name.includes(' ') && (
-                      <span className="text-white">
-                        {' '}
-                        {resumeData.basics.name.split(/\s+/).slice(1).join(' ')}
-                      </span>
-                    )}
-                  </motion.h1>
+                  <HeroAnimatedTitle
+                    name={resumeData.basics.name}
+                    taglineWords={HERO_TAGLINE_WORDS}
+                  />
 
                   <motion.p
                     className="mb-6 text-base font-medium leading-relaxed text-zinc-300 md:text-lg lg:max-w-xl"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55, delay: 0.24, ease: EASE }}
+                    initial={{ opacity: 0, y: 16, filter: 'blur(8px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    transition={{ duration: 0.6, delay: 0.52, ease: EASE }}
                   >
                     {resumeData.basics.title}
                   </motion.p>
 
-                  <motion.p
-                    className="mb-10 max-w-xl text-[15px] leading-relaxed text-zinc-400 md:text-base lg:mx-0 lg:mr-auto"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55, delay: 0.28, ease: EASE }}
-                  >
-                    {resumeData.basics.summary}
-                  </motion.p>
-
                   <motion.div
-                    className="flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start"
+                    className="mb-8 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start"
                     initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55, delay: 0.36, ease: EASE }}
+                    transition={{ duration: 0.55, delay: 0.58, ease: EASE }}
                   >
                     <motion.button
                       type="button"
@@ -424,10 +421,10 @@ export default function App() {
                   <motion.button
                     type="button"
                     onClick={handleDownloadResume}
-                    className="mt-4 inline-flex items-center justify-center gap-2 self-center text-sm font-medium text-zinc-500 underline decoration-blue-500/40 underline-offset-4 transition hover:text-blue-400 lg:self-start"
+                    className="mb-2 inline-flex items-center justify-center gap-2 self-center text-sm font-medium text-zinc-500 underline decoration-blue-500/40 underline-offset-4 transition hover:text-blue-400 lg:self-start"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5, duration: 0.4 }}
+                    transition={{ delay: 0.64, duration: 0.4 }}
                   >
                     <Download className="h-4 w-4" />
                     Download resume
@@ -435,7 +432,7 @@ export default function App() {
                 </motion.div>
 
                 <motion.div
-                  className="flex w-full justify-center lg:justify-end"
+                  className="flex w-full justify-center lg:justify-end lg:self-start"
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.75, delay: 0.22, ease: EASE }}
@@ -444,7 +441,8 @@ export default function App() {
                     initial={{ opacity: 0, scale: 0.94 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.65, delay: 0.28, ease: EASE }}
-                    className="w-full max-w-[min(100%,24rem)]"
+                    className="w-full max-w-[min(100%,34rem)] translate-x-8 -translate-y-4 sm:translate-x-12 sm:-translate-y-5 lg:translate-x-16 lg:-translate-y-8 xl:translate-x-24 xl:-translate-y-10"
+                    whileHover={{ scale: 1.02, transition: { duration: 0.35, ease: EASE } }}
                   >
                     <HeroOrbit name={resumeData.basics.name} />
                   </motion.div>
@@ -452,20 +450,21 @@ export default function App() {
               </div>
 
               <motion.div
-                className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2"
+                className="group absolute bottom-8 left-1/2 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1, duration: 0.45, ease: EASE }}
+                whileHover={{ scale: 1.05 }}
               >
                 <motion.div
                   animate={{ y: [0, 6, 0] }}
                   transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
                   className="flex flex-col items-center gap-2"
                 >
-                  <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-zinc-600">
+                  <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-zinc-600 transition-colors group-hover:text-zinc-400">
                     Scroll
                   </span>
-                  <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/10 bg-white/[0.02] p-1.5">
+                  <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/10 bg-white/[0.02] p-1.5 transition-[border-color,background-color,box-shadow] duration-300 group-hover:border-blue-500/35 group-hover:bg-blue-500/10 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]">
                     <motion.div
                       className="h-1.5 w-1 rounded-full bg-blue-400/80"
                       animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
@@ -476,157 +475,265 @@ export default function App() {
               </motion.div>
             </section>
 
-            <section id="experience" className="px-6 py-24 md:py-32">
+            <MarqueeStrip
+              segments={[
+                resumeData.basics.name.split(/\s+/)[0] || 'Portfolio',
+                'Full-stack',
+                'React',
+                'Node.js',
+                'TypeScript-ready',
+                resumeData.basics.location.split(',')[0] || 'London',
+              ]}
+            />
+
+            <ProfileOverview
+              summary={resumeData.basics.summary}
+              yearsExperience={(resumeData.basics as { yearsExperience: number }).yearsExperience}
+              companies={resumeData.experience.length}
+              skillAreas={resumeData.skills.length}
+            />
+
+            <section id="experience" className="relative overflow-hidden px-6 py-24 md:py-32">
               <div className="mx-auto max-w-5xl">
                 <SectionHeading eyebrow="Work history" title="Experience" icon={Briefcase} />
 
-                <div className="space-y-6">
-                  {resumeData.experience.map((exp, index) => (
+                <div className="relative space-y-5 md:space-y-6">
+                  <div
+                    className="pointer-events-none absolute left-12 top-6 bottom-6 hidden w-px bg-gradient-to-b from-sky-500/45 via-violet-500/20 to-fuchsia-500/25 md:block"
+                    aria-hidden
+                  />
+                  {resumeData.experience.map((exp, index) => {
+                    const expLogo = 'logo' in exp ? (exp as { logo?: string }).logo : undefined;
+                    const expLogoAlt = 'logoAlt' in exp ? (exp as { logoAlt?: string }).logoAlt : '';
+                    return (
                     <motion.article
                       key={index}
-                      initial={{ opacity: 0, y: 22 }}
-                      whileInView={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }}
+                      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                       viewport={{ once: true, margin: '-48px', amount: 0.2 }}
                       transition={{
-                        delay: index * 0.07,
-                        duration: 0.5,
+                        delay: index * 0.08,
+                        duration: 0.6,
                         ease: EASE,
                       }}
                       whileHover={{
-                        y: -4,
+                        y: -3,
                         transition: { duration: 0.25, ease: EASE },
                       }}
-                      className="surface-card group relative p-6 transition duration-300 hover:border-sky-500/20 hover:bg-zinc-900/55 hover:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.5)] md:p-8"
+                      className={cn(
+                        'surface-card group relative overflow-hidden rounded-2xl border border-white/[0.07]',
+                        'bg-gradient-to-br from-zinc-900/55 via-zinc-900/35 to-zinc-950/50',
+                        'p-6 transition-[border-color,box-shadow] duration-300 hover:border-sky-500/35 hover:shadow-[0_24px_56px_-28px_rgba(0,0,0,0.55)] md:p-0',
+                      )}
                     >
-                      <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                        <div>
-                          <h3 className="text-xl font-semibold text-white md:text-2xl">
-                            {exp.role}
-                          </h3>
-                          <p className="mt-1 text-base text-zinc-400">{exp.company}</p>
+                      <div
+                        className="pointer-events-none absolute inset-0 z-0 rounded-2xl bg-gradient-to-br from-sky-500/15 via-blue-500/[0.07] to-violet-500/15 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        aria-hidden
+                      />
+                      <div className="relative z-[1] flex flex-col md:flex-row md:gap-0">
+                        <div className="relative hidden w-[min(100%,13.5rem)] shrink-0 flex-col gap-5 border-white/[0.06] md:flex md:border-r md:bg-zinc-950/25 md:p-8 md:pl-10">
+                          <div
+                            className="relative z-[1] h-4 w-4 shrink-0 rounded-full border-2 border-sky-400/80 bg-zinc-950 shadow-[0_0_14px_rgba(56,189,248,0.45)]"
+                            aria-hidden
+                          >
+                            <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-sky-300 to-violet-500" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-[13px] font-medium leading-snug text-sky-300/95">
+                              {exp.dates}
+                            </p>
+                            <p className="mt-3 flex items-start gap-2 text-xs leading-relaxed text-zinc-500">
+                              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-80" />
+                              {exp.location}
+                            </p>
+                          </div>
                         </div>
-                        <div className="flex flex-col gap-1.5 text-sm text-zinc-500 md:items-end">
-                          <span className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4 shrink-0 opacity-70" />
-                            {exp.dates}
-                          </span>
-                          <span className="flex items-center gap-2">
-                            <MapPin className="h-4 w-4 shrink-0 opacity-70" />
-                            {exp.location}
-                          </span>
+
+                        <div className="min-w-0 flex-1 md:p-8 md:pl-10">
+                          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
+                            {expLogo && (
+                              <div className="mx-auto flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white p-2 shadow-inner ring-1 ring-black/10 sm:mx-0 md:h-[4.5rem] md:w-[4.5rem]">
+                                <img
+                                  src={expLogo}
+                                  alt={expLogoAlt || exp.company}
+                                  className="max-h-full max-w-full object-contain"
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              </div>
+                            )}
+                            <div className="min-w-0 flex-1">
+                          <div className="flex flex-col gap-1">
+                            <h3 className="text-center text-xl font-semibold tracking-tight text-white sm:text-left md:text-2xl">
+                              {exp.role}
+                            </h3>
+                            <p className="text-center text-base text-zinc-400 sm:text-left">{exp.company}</p>
+                            <div className="mt-4 flex flex-col gap-2 border-t border-white/[0.06] pt-4 text-xs text-zinc-500 md:hidden">
+                              <span className="inline-flex items-start gap-2">
+                                <Calendar className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-70" />
+                                {exp.dates}
+                              </span>
+                              <span className="inline-flex items-start gap-2">
+                                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-70" />
+                                {exp.location}
+                              </span>
+                            </div>
+                          </div>
+                          {exp.bullets.length > 0 && (
+                            <ul className="mt-6 space-y-2.5 text-[15px] leading-relaxed text-zinc-400">
+                              {exp.bullets.map((bullet, i) => (
+                                <li key={i} className="flex gap-3">
+                                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-sky-400/85" />
+                                  {bullet}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      {exp.bullets.length > 0 && (
-                        <ul className="space-y-2.5 border-t border-white/[0.06] pt-5 text-[15px] leading-relaxed text-zinc-400">
-                          {exp.bullets.map((bullet, i) => (
-                            <li key={i} className="flex gap-3">
-                              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-sky-400/80" />
-                              {bullet}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
                     </motion.article>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </section>
 
-            <section id="skills" className="border-y border-white/[0.04] bg-zinc-900/20 py-24 md:py-32">
-              <div className="mx-auto max-w-5xl px-6">
+            <section
+              id="skills"
+              className="relative overflow-hidden border-y border-white/[0.04] bg-zinc-900/25 py-24 md:py-32"
+            >
+              <div className="mx-auto max-w-6xl px-6">
                 <SectionHeading eyebrow="Toolkit" title="Skills & technology" icon={Code2} />
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-                  {resumeData.skills.map((skillGroup, index) => (
-                    <motion.div
-                      key={index}
-                      className="surface-card p-6 transition hover:border-violet-500/15 md:p-8"
-                      variants={skillCardVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true, margin: '-48px', amount: 0.15 }}
-                      whileHover={{
-                        y: -3,
-                        transition: { duration: 0.22, ease: EASE },
-                      }}
-                    >
-                      <h3 className="mb-6 text-lg font-semibold text-sky-300/90">
-                        {skillGroup.category}
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {skillGroup.items.map((skill, i) => (
-                          <motion.span
-                            key={i}
-                            variants={skillChipVariants}
-                            className="rounded-lg border border-white/[0.06] bg-zinc-950/40 px-3 py-1.5 text-xs font-medium text-zinc-300 ring-1 ring-white/[0.03]"
-                            whileHover={{
-                              scale: 1.04,
-                              borderColor: 'rgba(56, 189, 248, 0.35)',
-                              color: 'rgb(255 255 255)',
-                              transition: { duration: 0.18, ease: EASE },
-                            }}
-                          >
-                            {skill}
-                          </motion.span>
-                        ))}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                <motion.div
+                  className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 xl:gap-5"
+                  variants={skillCardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-48px', amount: 0.12 }}
+                >
+                  {resumeData.skills.map((skillGroup, index) => {
+                    const accents = [
+                      'from-sky-400 via-sky-500/90 to-cyan-500/70',
+                      'from-violet-400 via-violet-500/85 to-fuchsia-500/65',
+                      'from-fuchsia-400 via-pink-500/80 to-rose-500/65',
+                      'from-emerald-400 via-teal-500/80 to-cyan-600/65',
+                      'from-amber-400 via-orange-500/75 to-rose-500/60',
+                    ] as const;
+                    const bar = accents[index % accents.length];
+                    return (
+                      <motion.article
+                        key={index}
+                        variants={skillRowVariants}
+                        className={cn(
+                          'group relative flex min-h-[8.5rem] flex-col overflow-hidden rounded-2xl border border-white/[0.08]',
+                          'bg-gradient-to-br from-zinc-900/70 via-zinc-950/80 to-zinc-950',
+                          'p-5 shadow-[0_1px_0_rgba(255,255,255,0.05)_inset,0_18px_40px_-28px_rgba(0,0,0,0.65)]',
+                          'transition-[border-color,box-shadow] duration-300 hover:border-sky-500/30 hover:shadow-[0_24px_56px_-28px_rgba(14,165,233,0.15)]',
+                          'md:p-6',
+                        )}
+                        whileHover={{ y: -4, transition: { duration: 0.25, ease: EASE } }}
+                      >
+                        <div
+                          className="pointer-events-none absolute inset-0 z-0 rounded-2xl bg-gradient-to-br from-sky-600/20 via-blue-600/[0.12] to-violet-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                          aria-hidden
+                        />
+                        <div
+                          className={cn(
+                            'relative z-[1] mb-4 h-1 w-14 rounded-full bg-gradient-to-r shadow-[0_0_20px_rgba(56,189,248,0.25)]',
+                            bar,
+                          )}
+                          aria-hidden
+                        />
+                        <h3 className="relative z-[1] mb-4 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
+                          {skillGroup.category}
+                        </h3>
+                        <div className="relative z-[1] mt-auto flex min-h-0 flex-wrap content-start gap-2">
+                          {skillGroup.items.map((skill, i) => (
+                            <motion.span
+                              key={i}
+                              className="rounded-lg border border-white/[0.08] bg-zinc-950/55 px-2.5 py-1.5 text-[11px] font-medium leading-tight text-zinc-300 ring-1 ring-white/[0.04] backdrop-blur-[2px] transition-colors sm:px-3 sm:text-xs"
+                              whileHover={{
+                                scale: 1.04,
+                                borderColor: 'rgba(56, 189, 248, 0.38)',
+                                color: 'rgb(255 255 255)',
+                                transition: { duration: 0.18, ease: EASE },
+                              }}
+                            >
+                              {skill}
+                            </motion.span>
+                          ))}
+                        </div>
+                      </motion.article>
+                    );
+                  })}
+                </motion.div>
               </div>
             </section>
 
-            <section id="education" className="px-6 py-24 md:py-32">
+            <section id="education" className="relative overflow-hidden px-6 py-24 md:py-32">
               <div className="mx-auto max-w-5xl">
                 <SectionHeading eyebrow="Academics" title="Education" icon={GraduationCap} />
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+                <ul className="flex flex-col gap-4">
                   {resumeData.education.map((edu, index) => {
                     const logo = 'logo' in edu ? (edu as { logo?: string }).logo : undefined;
                     const logoAlt = 'logoAlt' in edu ? (edu as { logoAlt?: string }).logoAlt : '';
                     return (
-                      <motion.div
+                      <motion.li
                         key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, y: 22, filter: 'blur(8px)' }}
+                        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                         viewport={{ once: true, margin: '-40px' }}
-                        transition={{ delay: index * 0.08, duration: 0.5, ease: EASE }}
+                        transition={{ delay: index * 0.06, duration: 0.55, ease: EASE }}
                         whileHover={{
-                          y: -4,
-                          borderColor: 'rgba(59, 130, 246, 0.25)',
-                          transition: { duration: 0.25, ease: EASE },
+                          y: -2,
+                          borderColor: 'rgba(59, 130, 246, 0.28)',
+                          transition: { duration: 0.22, ease: EASE },
                         }}
-                        className="surface-card overflow-hidden p-6 transition hover:border-blue-500/25 md:p-8"
+                        className="surface-card group/edu relative flex flex-col gap-5 overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-r from-zinc-900/45 to-zinc-950/40 p-5 transition-[border-color,box-shadow] duration-300 hover:border-blue-500/25 hover:shadow-[0_24px_56px_-28px_rgba(59,130,246,0.15)] sm:flex-row sm:items-center sm:gap-6 sm:p-6 md:gap-8"
                       >
-                        <div className="flex flex-col gap-5 sm:flex-row sm:gap-6">
-                          <div className="mx-auto flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-white p-2 shadow-inner ring-1 ring-black/5 sm:mx-0 sm:h-28 sm:w-28">
-                            {logo ? (
-                              <img
-                                src={logo}
-                                alt={logoAlt || edu.institution}
-                                className="max-h-full max-w-full rounded-lg object-contain"
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            ) : (
-                              <GraduationCap className="h-12 w-12 text-blue-600" />
-                            )}
-                          </div>
-                          <div className="min-w-0 flex-1 text-center sm:text-left">
-                            <h3 className="mb-2 text-lg font-semibold leading-snug text-white">
-                              {edu.institution}
-                            </h3>
-                            <p className="mb-4 text-[15px] leading-relaxed text-zinc-400">{edu.degree}</p>
-                            <p className="flex items-center justify-center gap-2 text-sm text-zinc-500 sm:justify-start">
-                              <Calendar className="h-4 w-4 shrink-0 opacity-70" />
-                              {edu.dates}
-                            </p>
-                          </div>
+                        <div
+                          className="pointer-events-none absolute inset-0 z-0 rounded-2xl bg-gradient-to-r from-blue-500/[0.14] via-sky-500/[0.08] to-violet-500/[0.12] opacity-0 transition-opacity duration-300 group-hover/edu:opacity-100"
+                          aria-hidden
+                        />
+                        <div className="group/logo relative z-[1] mx-auto flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-2xl bg-white p-2.5 shadow-inner ring-1 ring-black/8 transition-[box-shadow,transform] duration-300 hover:ring-blue-500/25 sm:mx-0 sm:h-[5.25rem] sm:w-[5.25rem]">
+                          {logo ? (
+                            <img
+                              src={logo}
+                              alt={logoAlt || edu.institution}
+                              className="max-h-full max-w-full rounded-lg object-contain transition-transform duration-300 group-hover/logo:scale-105"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          ) : (
+                            <GraduationCap className="h-11 w-11 text-blue-600 sm:h-12 sm:w-12" />
+                          )}
                         </div>
-                      </motion.div>
+
+                        <div className="relative z-[1] min-w-0 flex-1 text-center sm:text-left">
+                          <h3 className="text-lg font-semibold leading-snug text-white md:text-xl">
+                            {edu.institution}
+                          </h3>
+                          <p className="mt-1.5 text-[15px] leading-relaxed text-zinc-400">{edu.degree}</p>
+                          <p className="mt-4 flex items-center justify-center gap-2 text-xs text-zinc-500 sm:hidden">
+                            <Calendar className="h-3.5 w-3.5 shrink-0 opacity-70" />
+                            {edu.dates}
+                          </p>
+                        </div>
+
+                        <div className="relative z-[1] hidden shrink-0 self-stretch border-white/[0.06] sm:flex sm:justify-end sm:border-l sm:pl-6 md:pl-8">
+                          <span className="inline-flex max-w-full items-center gap-2 self-center rounded-full border border-white/[0.08] bg-zinc-950/60 px-3.5 py-2 text-right text-xs font-medium leading-snug text-zinc-400 md:max-w-none md:text-sm">
+                            <Calendar className="h-3.5 w-3.5 shrink-0 opacity-70 md:h-4 md:w-4" />
+                            {edu.dates}
+                          </span>
+                        </div>
+                      </motion.li>
                     );
                   })}
-                </div>
+                </ul>
               </div>
             </section>
 

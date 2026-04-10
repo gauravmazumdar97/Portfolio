@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 
+const LOAD_MS = 1350;
+
 export const Splash: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
+  const [pct, setPct] = useState(0);
+
+  useEffect(() => {
+    const start = performance.now();
+    let frame: number;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / LOAD_MS);
+      setPct(Math.round(t * 100));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
   return (
     <motion.div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-zinc-950"
@@ -39,12 +55,22 @@ export const Splash: React.FC<{ onComplete: () => void }> = ({ onComplete }) => 
           className="h-full rounded-full bg-gradient-to-r from-sky-500 to-violet-500"
           initial={{ width: '0%' }}
           animate={{ width: '100%' }}
-          transition={{ duration: 1.35, ease: [0.65, 0, 0.35, 1] }}
+          transition={{ duration: LOAD_MS / 1000, ease: [0.65, 0, 0.35, 1] }}
         />
       </div>
 
       <motion.p
-        className="mt-5 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-zinc-500"
+        className="mt-4 font-mono text-3xl font-semibold tabular-nums tracking-tighter text-white md:text-4xl"
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.12, duration: 0.35 }}
+      >
+        {pct}
+        <span className="text-lg text-zinc-500 md:text-xl">%</span>
+      </motion.p>
+
+      <motion.p
+        className="mt-3 font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-zinc-500"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.35 }}

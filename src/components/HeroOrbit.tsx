@@ -33,7 +33,7 @@ const orbitTransition = {
 function IconNode({ icon }: { icon: OrbitIcon }) {
   return (
     <motion.div
-      className="flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border border-blue-500/40 bg-black/90 shadow-[0_0_20px_rgba(37,99,235,0.22)] backdrop-blur-sm sm:h-11 sm:w-11"
+      className="flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border border-blue-500/40 bg-black/90 shadow-[0_0_20px_rgba(37,99,235,0.22)] backdrop-blur-sm sm:h-[3.35rem] sm:w-[3.35rem]"
       animate={{ rotate: -360 }}
       transition={orbitTransition}
     >
@@ -42,8 +42,8 @@ function IconNode({ icon }: { icon: OrbitIcon }) {
         alt=""
         className={
           icon.invert
-            ? 'h-[1.35rem] w-[1.35rem] object-contain invert sm:h-6 sm:w-6'
-            : 'h-[1.35rem] w-[1.35rem] object-contain sm:h-6 sm:w-6'
+            ? 'h-[1.65rem] w-[1.65rem] object-contain invert sm:h-[1.85rem] sm:w-[1.85rem]'
+            : 'h-[1.65rem] w-[1.65rem] object-contain sm:h-[1.85rem] sm:w-[1.85rem]'
         }
         loading="lazy"
         decoding="async"
@@ -60,12 +60,21 @@ export const HeroOrbit: React.FC<{ name: string }> = ({ name }) => {
   const allLabels = [...OUTER_ICONS, ...INNER_ICONS].map((i) => i.label).join(', ');
 
   return (
-    <div className="relative mx-auto flex w-full max-w-[22rem] justify-center sm:max-w-[26rem]">
+    <div className="relative mx-auto flex w-full max-w-[30rem] justify-center sm:max-w-[36rem]">
       <div
-        className="relative aspect-square w-full [--r-inner:min(5.35rem,26vw)] [--r-outer:min(9rem,42vw)] sm:[--r-inner:6.2rem] sm:[--r-outer:10.25rem] md:[--r-inner:6.75rem] md:[--r-outer:11rem]"
+        className="relative aspect-square w-full [--r-inner:min(8.35rem,38vw)] [--r-outer:min(12.5rem,54vw)] sm:[--r-inner:9.65rem] sm:[--r-outer:14.25rem] md:[--r-inner:10.15rem] md:[--r-outer:15.25rem]"
         role="img"
         aria-label={`${name}; technology icons on two orbits: ${allLabels}.`}
       >
+        {/* Center backlight — radial wash behind portrait & orbits */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[210%] w-[210%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_88%_88%_at_50%_50%,rgba(56,189,248,0.34)_0%,rgba(37,99,235,0.18)_32%,rgba(37,99,235,0.06)_52%,transparent_78%)]"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[175%] w-[175%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_50%_48%,rgba(255,255,255,0.11)_0%,rgba(125,211,252,0.07)_22%,transparent_62%)] blur-3xl"
+          aria-hidden
+        />
         {/* Outer dashed orbit */}
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-blue-500/35"
@@ -94,7 +103,7 @@ export const HeroOrbit: React.FC<{ name: string }> = ({ name }) => {
                 key={`outer-${icon.label}`}
                 className="absolute left-1/2 top-1/2 h-0 w-0"
                 style={{
-                  transform: `rotate(${angle}deg) translateY(calc(-1 * var(--r-outer)))`,
+                  transform: `rotate(${angle}deg) translateY(calc(-1 * var(--r-outer))) rotate(${-angle}deg)`,
                 }}
               >
                 <IconNode icon={icon} />
@@ -108,7 +117,7 @@ export const HeroOrbit: React.FC<{ name: string }> = ({ name }) => {
                 key={`inner-${icon.label}`}
                 className="absolute left-1/2 top-1/2 h-0 w-0"
                 style={{
-                  transform: `rotate(${angle}deg) translateY(calc(-1 * var(--r-inner)))`,
+                  transform: `rotate(${angle}deg) translateY(calc(-1 * var(--r-inner))) rotate(${-angle}deg)`,
                 }}
               >
                 <IconNode icon={icon} />
@@ -119,10 +128,10 @@ export const HeroOrbit: React.FC<{ name: string }> = ({ name }) => {
 
         {/* Portrait above orbits */}
         <div className="pointer-events-none absolute inset-0 z-[2] flex items-center justify-center">
-          <div className="relative h-[min(46%,11rem)] w-[min(46%,11rem)] sm:h-[min(48%,12rem)] sm:w-[min(48%,12rem)]">
-            <div className="absolute inset-[-14%] rounded-full bg-blue-600/22 blur-2xl" />
+          <div className="relative h-[min(48%,14.25rem)] w-[min(48%,14.25rem)] sm:h-[min(50%,15.75rem)] sm:w-[min(50%,15.75rem)]">
+            <div className="absolute inset-[-48%] rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.4)_0%,rgba(37,99,235,0.18)_48%,transparent_78%)] blur-3xl" />
             <img
-              src="/profile.png"
+              src="/profile_2.jpeg"
               alt={name}
               className="relative z-10 h-full w-full rounded-full border-[3px] border-blue-500/50 object-cover object-[center_15%] shadow-[0_0_48px_rgba(37,99,235,0.38)] sm:border-4"
             />

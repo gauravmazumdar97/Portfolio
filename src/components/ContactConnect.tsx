@@ -45,9 +45,12 @@ export const ContactConnect: React.FC<Props> = ({
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="inline-block border border-blue-500 px-10 py-3 text-xl font-semibold tracking-wide text-blue-400 md:text-2xl">
+        <motion.h2
+          className="inline-block border border-blue-500 px-10 py-3 text-xl font-semibold tracking-wide text-blue-400 transition-[border-color,box-shadow,color,background-color] duration-300 hover:border-blue-400 hover:bg-blue-500/10 hover:text-blue-300 hover:shadow-[0_0_40px_-8px_rgba(59,130,246,0.35)] md:text-2xl"
+          whileHover={{ scale: 1.02 }}
+        >
           Let&apos;s Connect
-        </h2>
+        </motion.h2>
       </motion.div>
 
       <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-16">
@@ -65,11 +68,12 @@ export const ContactConnect: React.FC<Props> = ({
           <motion.img
             src={CONNECT_ILLUSTRATION}
             alt={`Illustration for Let's Connect — hand holding a phone with messaging icons`}
-            className="relative z-10 w-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.45)]"
+            className="relative z-10 w-full cursor-default object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.45)] transition-[filter,transform] duration-300 hover:drop-shadow-[0_24px_60px_rgba(59,130,246,0.15)]"
             loading="lazy"
             decoding="async"
             animate={{ y: [0, -5, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            whileHover={{ scale: 1.03 }}
           />
         </motion.div>
 
@@ -93,7 +97,7 @@ export const ContactConnect: React.FC<Props> = ({
                   placeholder="Enter your name"
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                  className="w-full rounded-xl border border-blue-500/20 bg-zinc-900/90 py-3.5 pl-11 pr-4 text-sm text-white placeholder:text-zinc-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/40"
+                  className="input-hover w-full rounded-xl border border-blue-500/20 bg-zinc-900/90 py-3.5 pl-11 pr-4 text-sm text-white placeholder:text-zinc-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/40"
                 />
               </div>
             </div>
@@ -112,7 +116,7 @@ export const ContactConnect: React.FC<Props> = ({
                   placeholder="name@example.com"
                   value={form.fromEmail}
                   onChange={(e) => setForm((f) => ({ ...f, fromEmail: e.target.value }))}
-                  className="w-full rounded-xl border border-blue-500/20 bg-zinc-900/90 py-3.5 pl-11 pr-4 text-sm text-white placeholder:text-zinc-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/40"
+                  className="input-hover w-full rounded-xl border border-blue-500/20 bg-zinc-900/90 py-3.5 pl-11 pr-4 text-sm text-white placeholder:text-zinc-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/40"
                 />
               </div>
             </div>
@@ -128,14 +132,14 @@ export const ContactConnect: React.FC<Props> = ({
                 placeholder="Write your message..."
                 value={form.message}
                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-                className="w-full resize-y rounded-xl border border-blue-500/20 bg-zinc-900/90 px-4 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/40"
+                className="input-hover w-full resize-y rounded-xl border border-blue-500/20 bg-zinc-900/90 px-4 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/40"
               />
             </div>
 
             <motion.button
               type="submit"
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 text-[15px] font-semibold text-white shadow-lg shadow-blue-950/35 transition hover:bg-blue-500"
-              whileHover={{ scale: 1.01 }}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 text-[15px] font-semibold text-white shadow-lg shadow-blue-950/35 transition hover:bg-blue-500 hover:shadow-[0_12px_40px_-8px_rgba(37,99,235,0.45)]"
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.99 }}
             >
               <Send className="h-4 w-4" />
@@ -182,7 +186,7 @@ export const ContactConnect: React.FC<Props> = ({
               href={linkedInUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition hover:border-blue-500/40 hover:text-blue-400"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
               aria-label="LinkedIn"
             >
               <Linkedin className="h-5 w-5" />
@@ -190,7 +194,7 @@ export const ContactConnect: React.FC<Props> = ({
           )}
           <a
             href={`mailto:${email}`}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition hover:border-blue-500/40 hover:text-blue-400"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-zinc-400 transition hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-400"
             aria-label="Email"
           >
             <Mail className="h-5 w-5" />

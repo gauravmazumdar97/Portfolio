@@ -25,11 +25,25 @@ export const ResumePrint: React.FC = () => {
       <section className="mb-8">
         <h2 className="text-xl font-bold uppercase border-b border-black mb-4">Experience</h2>
         <div className="space-y-6">
-          {resumeData.experience.map((exp, i) => (
+          {resumeData.experience.map((exp, i) => {
+            const logo = 'logo' in exp ? (exp as { logo?: string }).logo : undefined;
+            const logoAlt = 'logoAlt' in exp ? (exp as { logoAlt?: string }).logoAlt : '';
+            return (
             <div key={i}>
-              <div className="flex justify-between font-bold">
-                <span>{exp.role} | {exp.company}</span>
-                <span>{exp.dates}</span>
+              <div className="flex justify-between gap-4 font-bold">
+                <span className="flex items-center gap-3">
+                  {logo && (
+                    <img
+                      src={logo}
+                      alt={logoAlt || exp.company}
+                      className="h-10 w-10 shrink-0 object-contain"
+                    />
+                  )}
+                  <span>
+                    {exp.role} | {exp.company}
+                  </span>
+                </span>
+                <span className="shrink-0">{exp.dates}</span>
               </div>
               <p className="italic text-sm mb-2">{exp.location}</p>
               {exp.bullets.length > 0 && (
@@ -40,7 +54,8 @@ export const ResumePrint: React.FC = () => {
                 </ul>
               )}
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

@@ -2,10 +2,11 @@
   "basics": {
     "name": "Gaurav Mazumdar",
     "title": "@MSC Computer Science Student at University of East London | NodeJS | ExpressJS | Angular | React | MongoDB | MySQL | Sequelize | JavaScript | HTML | CSS",
-    "summary": "Logical and organised individual with a strong foundation in software engineering. Proficient in Java, .Net, Android, C#. Ability to translate business requirements into innovative software solutions. Excellent teamwork, interpersonal and communication skills. Looking to start a career as an entry-level professional with a reputed IT company.",
+    "summary": "Logical and organised software engineer with around three years of hands-on experience building and shipping full-stack web applications. Comfortable across the JavaScript ecosystem—React, Angular, Node.js, and Express—with solid work on APIs, databases (MongoDB, MySQL), and cloud-oriented tooling. I translate business requirements into clear, maintainable solutions, care about performance and code quality, and collaborate well in agile teams through clear communication, code review, and shared ownership. Currently pursuing an MSc in Computer Science at the University of East London; open to roles where I can keep growing as a full-stack developer with a forward-looking company.",
     "location": "London, England, United Kingdom",
     "email": "gauravmazumdar246@gmail.com",
     "phone": "07352672986 (Mobile)",
+    "yearsExperience": 3,
     "links": [
       {
         "label": "LinkedIn",
@@ -19,47 +20,52 @@
   },
   "experience": [
     {
-      "company": "Elite Mindz Pvt Ltd.",
+      "company": "EliteMindz Pvt Ltd.",
       "role": "Full Stack Developer",
-      "dates": "July 2024 - August 2025 (1 year 2 months)",
-      "location": "Janakpuri, New Delhi, India",
-      "bullets": []
+      "dates": "July 2024 - August 2025",
+      "location": "Janakpuri, Delhi, India",
+      "logo": "/companies/elitemindz.png",
+      "logoAlt": "EliteMindz",
+      "bullets": [
+        "Migrated 5+ core modules, improving application structure and reducing code redundancy by 30%.",
+        "Led a team of 4 developers, task distribution, sprint planning, and code reviews to meet 100% project deadlines.",
+        "Optimized backend APIs and database queries, improving overall application performance by 25–30%."
+      ]
     },
     {
-      "company": "TechAhead",
-      "role": "Associate Software Engineer",
-      "dates": "April 2022 - December 2023 (1 year 9 months)",
-      "location": "Noida, Uttar Pradesh, India",
-      "bullets": []
+      "company": "TechAhead Corp",
+      "role": "Associate Software Developer",
+      "dates": "April 2022 - December 2023",
+      "location": "Noida Sec-62, UP, India",
+      "logo": "/companies/techahead.png",
+      "logoAlt": "TechAhead",
+      "bullets": [
+        "Implemented AWS services (Redis caching, WebSocket), improving response time by 35% and real-time updates for 1,000+ users.",
+        "Developed and maintained 3+ production-level web applications using the MEAN stack.",
+        "Designed and optimized REST APIs handling 10,000+ monthly transactions with secure authentication and validation."
+      ]
     }
   ],
   "skills": [
     {
-      "category": "Top Skills",
-      "items": [
-        "Big Data Analytics",
-        "Cloud Computing",
-        "Software Systems Engineering"
-      ]
+      "category": "Frontend",
+      "items": ["React", "Angular", "JavaScript", "HTML", "CSS", "Bootstrap"]
     },
     {
-      "category": "Technologies",
-      "items": [
-        "NodeJS",
-        "ExpressJS",
-        "Angular",
-        "React",
-        "MongoDB",
-        "MySQL",
-        "Sequelize",
-        "JavaScript",
-        "HTML",
-        "CSS",
-        "Java",
-        ".Net",
-        "Android",
-        "C#"
-      ]
+      "category": "Backend",
+      "items": ["NodeJS", "ExpressJS", "Python", "C#"]
+    },
+    {
+      "category": "Databases",
+      "items": ["MongoDB", "MySQL"]
+    },
+    {
+      "category": "Libraries",
+      "items": ["Sequelize", "Tailwind CSS", "JWT", "Axios", "npm"]
+    },
+    {
+      "category": "Cloud",
+      "items": ["AWS", "Netlify", "GitHub", "Docker", "Vercel"]
     }
   ],
   "education": [
@@ -67,21 +73,21 @@
       "institution": "University of East London (UEL)",
       "degree": "Msc in Computer Science, Information Technology",
       "dates": "September 2025 - April 2027",
-      "logo": "/edu/uel.svg",
+      "logo": "/edu/uel.png",
       "logoAlt": "University of East London"
     },
     {
       "institution": "Centre for Development of Advanced Computing (C-DAC)",
       "degree": "Master of Computer Applications - MCA",
       "dates": "August 2019 - August 2022",
-      "logo": "/edu/cdac.jpeg",
+      "logo": "/edu/cdac.png",
       "logoAlt": "C-DAC"
     },
     {
       "institution": "Kamal Institute of Higher Education and Advanced Technology (KIHEAT)",
       "degree": "Bachelor of Computer Applications - BCA",
       "dates": "August 2016 - May 2019",
-      "logo": "/edu/kiheat.jpg",
+      "logo": "/edu/kiheat.png",
       "logoAlt": "KIHEAT Delhi"
     }
   ],
